@@ -3,7 +3,7 @@ on:
   push:
    workflows:
     branches:
-      - main
+      - master
   
 on: workflow_dispatch
 
