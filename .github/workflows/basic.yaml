@@ -9,20 +9,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+   # setup node
       - name: setup node
         uses: actions/setup-node@v2
         with:
           node-version: '18'
+   # install dependencies for app
 
       - name: Install dependencies
         run: npm install
+    # install dependencies for test if there are any test
 
       - name: Run tests
         run: npm test
-
+    # build project for production
       - name: Build project
         run: npm run build
-
+    # run project for production
       - name: start project
         run: npm start
