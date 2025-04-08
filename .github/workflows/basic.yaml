@@ -25,6 +25,4 @@ jobs:
     # build project for production
       - name: Build project
         run: npm run build
-    # run project for production
-      - name: start project
-        run: npm start
+
