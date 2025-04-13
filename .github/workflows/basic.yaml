@@ -42,4 +42,5 @@ jobs:
           resourceGroup: ZenPOC
           imageToDeploy: docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
           containerAppEnvironment: charanzenpoc
-          containerAppName: charanzencon
+          containerAppName: charanzenconapp-volumes-test1
+
