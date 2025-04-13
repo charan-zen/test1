@@ -39,7 +39,6 @@ jobs:
       - name: Deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
-          containerAppName: ${{ vars.CONTAINER_APP_NAME }}
-          resourceGroup: Charansai
+          resourceGroup: ZenPOC
           imageToDeploy: docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
           containerAppEnvironment: charanzenpoc
