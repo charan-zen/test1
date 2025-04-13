@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+ # dev server
+ react-app-dev:
+  build:
+   context: .
+   dockerfile: Dockerfile.dev
+  ports:
+      - 5000:3000
+  environment:
+    - NODE_ENV=development
+
+ # prod service
+  react-app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - 8080:80
+    environment:
+     -Node_ENV=production
