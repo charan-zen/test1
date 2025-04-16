@@ -59,7 +59,7 @@ jobs:
         run: |
           az containerapp update --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
           --image docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }} \
-          --revision-suffix "${{ env.BLUE_REVISION }}"
+          --revision-suffix "${{ env.GREEN_REVISION }}"
 
         # uses: azure/container-apps-deploy-action@v1
         # with:
