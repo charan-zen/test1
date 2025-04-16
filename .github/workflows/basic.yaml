@@ -74,3 +74,24 @@ jobs:
           --revision-weight "charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}"=90 "charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}"=10
           echo "10% traffic to green revision and 90% traffic to blue revision"
 
+      - name: slowly incerese the traffic (50%) reduseing the downtime of the application
+        run: |
+         sleep 10 # wait for 10 seconds before increasing the traffic
+         az containerapp ingress traffic set --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
+         --revision-weight "charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}"=50 "charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}"=50
+
+      - name: shift all traffic to green revision (100%)
+        run: |
+          sleep 10 # wait for 10 seconds before increasing the traffic
+          az containerapp ingress traffic set --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
+          --revision-weight "charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}"=0 "charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}"=100
+          echo "100% traffic to green revision and 0% traffic to blue revision"
+
+      - name: rollback if need
+        if: failure()
+        run: |
+          echo "Rolling back to the previous revision"
+          az containerapp revision copy --name charanzenconapp-volumes-test1 --resource-group ZenPOC --revision-suffix "${{ env.BLUE_REVISION }}"
+          az containerapp ingress traffic set --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
+          --revision-weight "charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}"=100 "charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}"=0
+          echo "100% traffic to blue revision and 0% traffic to green revision"
