@@ -54,6 +54,8 @@ jobs:
           echo "Blue revision is $(cat current-revision.txt)"
           echo "--revision-suffix ${{ env.BLUE_REVISION }}"
 
+      # add
+
       # - name: Deploy to Azure Container Apps
       #   uses: azure/container-apps-deploy-action@v1
       #   with:
