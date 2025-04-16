@@ -71,5 +71,5 @@ jobs:
       - name: first stage of the canary traffic split (10%)
         run: |
           az containerapp ingress traffic set --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
-          --revision-weights --name charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}=90 --name charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}=10
+          --revision-weights charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}=90 --name charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}=10
 
