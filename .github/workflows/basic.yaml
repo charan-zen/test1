@@ -27,40 +27,46 @@ jobs:
             echo "This is GitHub Actions run number ${{ github.run_number }}"
             echo "This is GitHub Actions run number ${{ github.run_attempt }}"
 
-      # - name: Build Docker image
-      #   run: |
-      #     docker build \
-      #       --build-arg KINDE_CLIENT_ID="fd7406b8-cd0f-40d8-806f-e7017caa410" \
-      #       --build-arg KINDE_CLIENT_SECRET="fd731090-99a1-4dc0-bef9-bae2c1b952b1" \
-      #       --build-arg NEXT_PUBLIC_APP_URL="https://charanzencon.graysmoke-418af36c.centralindia.azurecontainerapps.io" \
-      #       -t multistage1:latest -f Dockerfile.prod .
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg KINDE_CLIENT_ID="fd7406b8-cd0f-40d8-806f-e7017caa410" \
+            --build-arg KINDE_CLIENT_SECRET="fd731090-99a1-4dc0-bef9-bae2c1b952b1" \
+            --build-arg NEXT_PUBLIC_APP_URL="https://charanzencon.graysmoke-418af36c.centralindia.azurecontainerapps.io" \
+            -t multistage1:latest -f Dockerfile.prod .
 
-      # - name: Tag Docker image
-      #   run: docker tag multistage1:latest ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
+      - name: Tag Docker image
+        run: docker tag multistage1:latest ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
 
-      # - name: Push Docker image
-      #   run: docker push ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
+      - name: Push Docker image
+        run: docker push ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
 
       - name: Log in to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: get the current reversion
+      - name: get the current reversion and copy the revision name and add suffix as git hub_run number and run_attempt
         run : |
           az containerapp revision list --name charanzenconapp-volumes-test1 --resource-group ZenPOC --query "[?properties.active].{RevisionName:name}[0]" -o tsv > current-revision.txt
           echo "Current revision is $(cat current-revision.txt)"
           az containerapp revision copy --name charanzenconapp-volumes-test1 --resource-group ZenPOC --resource-group ZenPOC --revision-suffix "${{ env.BLUE_REVISION }}"
           echo "Blue revision is $(cat current-revision.txt)"
           echo "--revision-suffix ${{ env.BLUE_REVISION }}"
+        
 
-      # add
+      - name: Deploy to new revision
+        run: |
+          az containerapp update --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
+          --image docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }} \
+          --revision-suffix "${{ env.BLUE_REVISION }}"
+          echo "--name charanzenconapp-volumes-test1 --revision-suffix "${{ env.BLUE_REVISION }}"
 
-      # - name: Deploy to Azure Container Apps
-      #   uses: azure/container-apps-deploy-action@v1
-      #   with:
-      #     resourceGroup: ZenPOC
-      #     imageToDeploy: docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
-      #     containerAppEnvironment: charanzenpoc
-      #     containerAppName: charanzenconapp-volumes-test1
+        # uses: azure/container-apps-deploy-action@v1
+        # with:
+        #   resourceGroup: ZenPOC
+        #   imageToDeploy: docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
+        #   containerAppEnvironment: charanzenpoc
+        #   containerAppName: charanzenconapp-volumes-test1
 
+      - 
