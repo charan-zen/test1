@@ -52,7 +52,7 @@ jobs:
           echo "Current revision is $(cat current-revision.txt)"
           az containerapp revision copy --name charanzenconapp-volumes-test1 --resource-group ZenPOC --resource-group ZenPOC --revision-suffix "${{ env.BLUE_REVISION }}"
           echo "Blue revision is $(cat current-revision.txt)"
-          echo"--revision-suffix ${{ env.BLUE_REVISION }}"
+          echo "--revision-suffix ${{ env.BLUE_REVISION }}"
 
       # - name: Deploy to Azure Container Apps
       #   uses: azure/container-apps-deploy-action@v1
