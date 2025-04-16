@@ -18,7 +18,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Print the run number
-        run: echo "This is GitHub Actions run number ${{ github.run_number }}"
+        run: |
+            echo "This is GitHub Actions run number ${{ github.run_number }}"
+            echo "This is GitHub Actions run number ${{ github.run_attempt }}"
 
       # - name: Build Docker image
       #   run: |
