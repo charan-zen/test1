@@ -72,4 +72,5 @@ jobs:
         run: |
           az containerapp ingress traffic set --name charanzenconapp-volumes-test1 --resource-group ZenPOC \
           --revision-weights charanzenconapp-volumes-test1--${{env.BLUE_REVISION}}=90 --name charanzenconapp-volumes-test1--${{env.GREEN_REVISION}}=10
+          echo "10% traffic to green revision and 90% traffic to blue revision"
 
