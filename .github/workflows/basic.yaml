@@ -1,4 +1,4 @@
-name: posthog-container app Manual Deployment
+name: Canary + Blue-Green container app Manual Deployment
 
 on: 
   workflow_dispatch:
@@ -9,8 +9,8 @@ jobs:
 
 
     env:
-      GREEN_REVISION: green-${{ github.run_number }}-${{ github.run_attempt }}
-      BLUE_REVISION: blue-${{ github.run_number }}-${{ github.run_attempt }}
+      GREEN_reversion: green-${{ github.run_number }}-${{ github.run_attempt }}
+      BLUE_reversion: blue-${{ github.run_number }}-${{ github.run_attempt }}
 
     steps:
       - name: Check out code
@@ -48,10 +48,10 @@ jobs:
 
       - name: get the current reversion
         run : |
-          az containerapp revision list --name charanzenconapp-volumes-test1 --resource-group ZenPOC --query "[?properties.active].{ReversionName:name}[0]" -o tsv > current-revision.txt
-          echo "Current revision is $(cat current-revision.txt)"
-          az containerapp revision copy --name charanzenconapp-volumes-test1 --resource-group ZenPOC --resource-group ZenPOC --revision-sufix "${{ env.BlUE_REVISION }}"
-          echo "Blue revision is $(cat current-revision.txt) --revision-sufix ${{ env.BLUE_REVISION }}"
+          az containerapp reversion list --name charanzenconapp-volumes-test1 --resource-group ZenPOC --query "[?properties.active].{ReversionName:name}[0]" -o tsv > current-reversion.txt
+          echo "Current reversion is $(cat current-reversion.txt)"
+          az containerapp reversion copy --name charanzenconapp-volumes-test1 --resource-group ZenPOC --resource-group ZenPOC --reversion-sufix "${{ env.BlUE_reversion }}"
+          echo "Blue reversion is $(cat current-reversion.txt) --reversion-sufix ${{ env.BLUE_reversion }}"
 
       # - name: Deploy to Azure Container Apps
       #   uses: azure/container-apps-deploy-action@v1
