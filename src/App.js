@@ -16,4 +16,8 @@ function App() {
   );
 }
 
+const loginWithGitHub = () => {
+  window.location.href = "/.auth/login/github";
+};
+
 export default App;

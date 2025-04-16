@@ -17,30 +17,33 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker image
-        run: |
-          docker build \
-            --build-arg KINDE_CLIENT_ID="fd7406b8-cd0f-40d8-806f-e7017caa410" \
-            --build-arg KINDE_CLIENT_SECRET="fd731090-99a1-4dc0-bef9-bae2c1b952b1" \
-            --build-arg NEXT_PUBLIC_APP_URL="https://charanzencon.graysmoke-418af36c.centralindia.azurecontainerapps.io" \
-            -t multistage1:latest -f Dockerfile.prod .
+      - name: Print the run number
+        run: echo "This is GitHub Actions run number ${{ github.run_number }}"
 
-      - name: Tag Docker image
-        run: docker tag multistage1:latest ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
+      # - name: Build Docker image
+      #   run: |
+      #     docker build \
+      #       --build-arg KINDE_CLIENT_ID="fd7406b8-cd0f-40d8-806f-e7017caa410" \
+      #       --build-arg KINDE_CLIENT_SECRET="fd731090-99a1-4dc0-bef9-bae2c1b952b1" \
+      #       --build-arg NEXT_PUBLIC_APP_URL="https://charanzencon.graysmoke-418af36c.centralindia.azurecontainerapps.io" \
+      #       -t multistage1:latest -f Dockerfile.prod .
 
-      - name: Push Docker image
-        run: docker push ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
+      # - name: Tag Docker image
+      #   run: docker tag multistage1:latest ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
 
-      - name: Log in to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # - name: Push Docker image
+      #   run: docker push ${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
 
-      - name: Deploy to Azure Container Apps
-        uses: azure/container-apps-deploy-action@v1
-        with:
-          resourceGroup: ZenPOC
-          imageToDeploy: docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
-          containerAppEnvironment: charanzenpoc
-          containerAppName: charanzenconapp-volumes-test1
+      # - name: Log in to Azure
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # - name: Deploy to Azure Container Apps
+      #   uses: azure/container-apps-deploy-action@v1
+      #   with:
+      #     resourceGroup: ZenPOC
+      #     imageToDeploy: docker.io/${{ vars.DOCKER_USERNAME }}/multistage1:${{ github.sha }}
+      #     containerAppEnvironment: charanzenpoc
+      #     containerAppName: charanzenconapp-volumes-test1
 
