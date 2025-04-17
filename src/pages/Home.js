@@ -16,8 +16,8 @@ function Home() {
   return (
     <div>
       <h1>Login Page hear to </h1>
-      <button onClick={() => handleLogin.apply ('google')}>Login with the............. Google</button>
-      <button onClick={() => handleLogin ('github')}>Login with the............ GitHub</button>
+      <button onClick={() => handleLogin.apply ('google')}>Login with thexxxxxxxxxxxxxx Google</button>
+      <button onClick={() => handleLogin ('github')}>Login with the!!!!!!!!!!!!!!! GitHub</button>
     </div>
   );
 }
