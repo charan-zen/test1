@@ -16,10 +16,12 @@ function Home() {
   return (
     <div>
       <h1>Login Page</h1>
-      <button onClick={() => handleLogin('google')}>Login with Google</button>
-      <button onClick={() => handleLogin('github')}>Login with GitHub</button>
+      <button onClick={() => handleLogin ('google')}>Login with the.. Google</button>
+      <button onClick={() => handleLogin ('github')}>Login with the.. GitHub</button>
     </div>
   );
 }
+
+
 
 export default Home;
